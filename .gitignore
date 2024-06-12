@@ -74,3 +74,6 @@ crashlytics-build.properties
 /FoodBalance/Logs
 /FoodBalance/UserSettings
 /FoodBalance/Temp
+/FoodBalance/.idea
+/FoodBalance/obj
+/FoodBalance/obj

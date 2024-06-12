@@ -9,19 +9,25 @@ public class PlayerController : MonoBehaviour
     public Vector3 movement;
     
     [SerializeField] private Rigidbody rb;
-    private float timer = 0.4f;
+    private float timer = 0.3f;
     private float horizontal = 1f;
-    float vertical = 0.5f;
+    float vertical = 0.4f;
+    private float timerStart = 1f;
+    
     
     void Update()
     {
-        timer += Time.deltaTime;
-        if(timer>.8f)
+        timerStart -= Time.deltaTime;
+        if (timerStart < 0)
+        {
+            timer += Time.deltaTime;
+        }
+        if(timer>.6f)
         {
             timer = 0;
             vertical *= -1;
         }
-        movement = new Vector3(horizontal, vertical ,0);
+        movement = new Vector3(timerStart < 0?horizontal:0, timerStart < 0?vertical:0 ,0);
     }
  
  
@@ -33,6 +39,12 @@ public class PlayerController : MonoBehaviour
  
     void moveCharacter(Vector3 direction)
     {
+        if (rb.transform.localPosition.x > 5.5)
+        {
+            rb.velocity = Vector3.zero;
+            Destroy(this.gameObject);
+            return;
+        }
         rb.velocity = direction * speed;
     }
 }
