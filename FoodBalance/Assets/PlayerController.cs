@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] private GameObject Plate;
+    [SerializeField] private FoodController food;
     // Start is called before the first frame update
     [SerializeField] public float speed = 1; // Adjustable movement speed
     public Vector3 movement;
@@ -13,10 +16,18 @@ public class PlayerController : MonoBehaviour
     private float horizontal = 1f;
     float vertical = 0.4f;
     private float timerStart = 1f;
-    
-    
+
+    private bool isStart = false;
     void Update()
     {
+        
+        if (Input.GetKey(KeyCode.A))
+        {
+            food.ActiveFood();
+            isStart = true;
+        }
+        
+        if(!isStart) return;
         timerStart -= Time.deltaTime;
         if (timerStart < 0)
         {
@@ -36,13 +47,17 @@ public class PlayerController : MonoBehaviour
         moveCharacter(movement);
     }
  
+    private bool isDone = false;
  
     void moveCharacter(Vector3 direction)
     {
+        if (isDone) return;
         if (rb.transform.localPosition.x > 5.5)
         {
             rb.velocity = Vector3.zero;
-            Destroy(this.gameObject);
+            Destroy(Plate);
+            food.CheckFood();
+            isDone = true;
             return;
         }
         rb.velocity = direction * speed;
